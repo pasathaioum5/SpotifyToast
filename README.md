@@ -6,6 +6,8 @@ A lightweight Windows tray app that pops up a toast notification whenever the **
 
 SpotifyToast reads the title of Spotify's window, which shows `Artist - Song` while music plays. It doesn't use the Spotify Web API, so there's no login, no API keys and no network access.
 
+Inspired by [Toastify](https://github.com/aleab/toastify) by aleab. See [Credits](#credits-and-license).
+
 ## Features
 
 - **Instant notifications.** It reacts to Windows title-change events (`SetWinEventHook`) instead of polling.
@@ -162,7 +164,8 @@ SpotifyToast makes no network connections and collects no data. It reads only wi
 
 ## Credits and license
 
-- The application icon (`Resources/app.ico`) comes from [Toastify](https://github.com/aleab/toastify) and is licensed under **GPLv2**. It's derived from the Spotify logo.
+- **Inspiration:** the idea for SpotifyToast comes from [**Toastify**](https://github.com/aleab/toastify) by **aleab**, version 1.10.11. Toastify is a full-featured Spotify companion with toasts, media hotkeys and more. SpotifyToast is a from-scratch, minimal reimplementation of its core idea: a toast on track change. It shares no source code with Toastify.
+- The application icon (`Resources/app.ico`) is `ToastifyIcon.ico`, taken from the Toastify 1.10.14 source and licensed under **GPLv2**. It's derived from the Spotify logo.
 - **Spotify** is a trademark of Spotify AB. This project is not affiliated with, endorsed by or sponsored by Spotify.
 
 <!-- TODO: choose a license for the source code and add a LICENSE file. -->
