@@ -1,0 +1,37 @@
+# --- Build output --------------------------------------------------------------
+bin/
+obj/
+publish/
+publish-*/
+*.pdb
+
+# Release artifacts belong on the GitHub Releases page, not in the repo.
+*.exe
+*.zip
+*.msi
+
+# --- IDE / editor ------------------------------------------------------------------
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+# --- Test / tooling output ------------------------------------------------------
+TestResults/
+*.log
+
+# --- OS files -----------------------------------------------------------------------
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Local / personal files -----------------------------------------------------
+# Claude Code conversation exports (contain local paths and your username).
+20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.txt
+# Claude Code local settings.
+.claude/settings.local.json
+# A settings.json copied here for testing (the real one lives in %APPDATA%\SpotifyToast).
+settings.json

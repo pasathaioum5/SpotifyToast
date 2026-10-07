@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <AssemblyTitle>SpotifyToast</AssemblyTitle>
+    <Product>SpotifyToast</Product>
+    <Description>Shows a toast notification when the Spotify desktop app changes track.</Description>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <!-- Release builds: replace the local source path (which contains the Windows username)
+       with "/_/" in the embedded PDB path and stack traces, so published binaries are reproducible. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=/_/</PathMap>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Embedded as well so the tray can load the crisp 16px frame instead of a downscaled 32px one. -->
+    <EmbeddedResource Include="Resources\app.ico" LogicalName="SpotifyToast.app.ico" />
+  </ItemGroup>
+
+</Project>

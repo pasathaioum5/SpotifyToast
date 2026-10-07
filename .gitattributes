@@ -1,0 +1,9 @@
+# Store text files with LF in the repo; Git converts to the platform's line endings on checkout.
+* text=auto
+
+*.cs      text diff=csharp
+*.csproj  text
+*.md      text
+
+*.ico     binary
+*.png     binary
