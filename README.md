@@ -13,6 +13,7 @@ Inspired by [Toastify](https://github.com/aleab/toastify) by aleab. See [Credits
 - **Instant notifications.** It reacts to Windows title-change events (`SetWinEventHook`) instead of polling.
 - **Unobtrusive toast.** The popup is always on top but never takes focus or appears in the taskbar. It fades in and out, and a click dismisses it.
 - **Customizable look.** You can set the size, screen corner, margins, display duration and colors, with a live preview.
+- **Scrolling long names.** A song title or artist too long for the toast scrolls so you can read all of it, at a speed you choose.
 - **Global keyboard shortcut.** It shows the current song on demand (default `Ctrl+Alt+Shift+S`).
 - **Start with Windows.** This is an optional per-user setting that doesn't need admin rights.
 - **DPI-aware.** The toast stays sharp on high-DPI and mixed-DPI setups.
@@ -77,6 +78,7 @@ Open **Settings...** from the tray menu. Changes preview live. **Save** keeps th
 | Position | Bottom-right, bottom-left, top-right, top-left | Bottom-right |
 | Horizontal / vertical margin | 0–400 px from the screen edge | 16 / 16 |
 | Display duration | 1–60 s in 0.5 s steps, excluding the ~0.2 s fade | 4 s |
+| Long text scroll speed | 10–300 px/s in steps of 5 | 50 px/s |
 | Background, title and artist colors | Any color | `#181818`, `#FFFFFF`, `#1ED760` |
 | Show-song shortcut | Any key combination, or none | `Ctrl+Alt+Shift+S` |
 
@@ -90,6 +92,7 @@ Settings are stored per user in `%APPDATA%\SpotifyToast\settings.json`:
   "MarginX": 16,
   "MarginY": 16,
   "DurationSeconds": 4,
+  "MarqueeSpeed": 50,
   "ShowHotkey": "Ctrl+Alt+Shift+S",
   "BackgroundColor": "#181818",
   "TitleColor": "#FFFFFF",
@@ -98,6 +101,18 @@ Settings are stored per user in `%APPDATA%\SpotifyToast\settings.json`:
 ```
 
 You can edit the file by hand. Out-of-range values are clamped, and if the file is unreadable the app falls back to the defaults.
+
+### Long song titles and artist names
+
+If a song title or artist name is wider than the toast, that line scrolls:
+
+1. It pauses for 1 s at the start.
+2. It scrolls left until the end of the text is visible.
+3. It pauses for 1 s at the end.
+
+If time remains, it jumps back to the start and repeats. Both lines scroll at the same speed, and a line that fits stays still.
+
+**The toast always finishes a full scroll pass before fading out, even if that runs past the display duration.** For example, a title that needs 6 s to scroll keeps a 4 s toast on screen for about 6 s. Changing the speed in Settings previews it with sample long text.
 
 ### Keyboard shortcut rules
 

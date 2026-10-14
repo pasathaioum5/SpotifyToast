@@ -15,7 +15,8 @@ public sealed class SettingsForm : Form
         (ToastCorner.TopLeft, "Top left"),
     };
 
-    private readonly Action<AppSettings> _preview;
+    /// <summary>Shows a preview toast; the flag asks for text long enough to scroll.</summary>
+    private readonly Action<AppSettings, bool> _preview;
     private readonly Func<AppSettings, string?> _validate;
     private readonly NumericUpDown _width = MakeNumber(AppSettings.MinWidth, AppSettings.MaxWidth);
     private readonly NumericUpDown _height = MakeNumber(AppSettings.MinHeight, AppSettings.MaxHeight);
@@ -29,6 +30,13 @@ public sealed class SettingsForm : Form
         Increment = 0.5m,
         Width = 80,
     };
+    private readonly NumericUpDown _marqueeSpeed = new()
+    {
+        Minimum = AppSettings.MinMarqueeSpeed,
+        Maximum = AppSettings.MaxMarqueeSpeed,
+        Increment = 5,
+        Width = 80,
+    };
     private readonly ComboBox _corner = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 140 };
     private readonly Button _background = MakeColorButton();
     private readonly Button _titleColor = MakeColorButton();
@@ -39,7 +47,7 @@ public sealed class SettingsForm : Form
     /// <summary>The edited settings; valid when the dialog returns <see cref="DialogResult.OK"/>.</summary>
     public AppSettings Result { get; private set; }
 
-    public SettingsForm(AppSettings current, Action<AppSettings> preview,
+    public SettingsForm(AppSettings current, Action<AppSettings, bool> preview,
         Func<AppSettings, string?> validate, Icon? icon)
     {
         Result = current.Clone();
@@ -67,6 +75,7 @@ public sealed class SettingsForm : Form
         AddRow(grid, "Horizontal margin (px)", _marginX);
         AddRow(grid, "Vertical margin (px)", _marginY);
         AddRow(grid, "Display duration (seconds)", _duration);
+        AddRow(grid, "Long text scroll speed (px/s)", _marqueeSpeed);
         AddRow(grid, "Background color", _background);
         AddRow(grid, "Song title color", _titleColor);
         AddRow(grid, "Artist color", _artistColor);
@@ -110,7 +119,9 @@ public sealed class SettingsForm : Form
             if (!_loading)
                 Result.ShowHotkey = _hotkey.Value?.ToString() ?? "";
         };
-        previewButton.Click += (_, _) => _preview(Result);
+        // Speed changes preview with deliberately long text so the scrolling is visible.
+        _marqueeSpeed.ValueChanged += (_, _) => OnChanged(longSample: true);
+        previewButton.Click += (_, _) => _preview(Result, false);
         resetButton.Click += (_, _) =>
         {
             LoadValues(new AppSettings());
@@ -141,6 +152,7 @@ public sealed class SettingsForm : Form
         _marginX.Value = s.MarginX;
         _marginY.Value = s.MarginY;
         _duration.Value = (decimal)s.DurationSeconds;
+        _marqueeSpeed.Value = s.MarqueeSpeed;
         _corner.SelectedIndex = Math.Max(0, Array.FindIndex(Corners, c => c.Value == s.Corner));
         SetSwatch(_background, s.Background);
         SetSwatch(_titleColor, s.Title);
@@ -149,7 +161,7 @@ public sealed class SettingsForm : Form
         _loading = false;
     }
 
-    private void OnChanged()
+    private void OnChanged(bool longSample = false)
     {
         if (_loading)
             return;
@@ -161,13 +173,14 @@ public sealed class SettingsForm : Form
             MarginX = (int)_marginX.Value,
             MarginY = (int)_marginY.Value,
             DurationSeconds = (double)_duration.Value,
+            MarqueeSpeed = (int)_marqueeSpeed.Value,
             Corner = Corners[Math.Max(0, _corner.SelectedIndex)].Value,
             BackgroundColor = AppSettings.ToHex(_background.BackColor),
             TitleColor = AppSettings.ToHex(_titleColor.BackColor),
             ArtistColor = AppSettings.ToHex(_artistColor.BackColor),
             ShowHotkey = _hotkey.Value?.ToString() ?? "",
         };
-        _preview(Result);
+        _preview(Result, longSample);
     }
 
     private void PickColor(Button target)

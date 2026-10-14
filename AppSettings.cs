@@ -19,6 +19,7 @@ public sealed class AppSettings
     public const int MinHeight = 60, MaxHeight = 300;
     public const int MaxMargin = 400;
     public const double MinDuration = 1, MaxDuration = 60;
+    public const int MinMarqueeSpeed = 10, MaxMarqueeSpeed = 300;
 
     // Sizes are in logical pixels (96 DPI) and scaled to the monitor's DPI when shown.
     public int Width { get; set; } = 340;
@@ -29,6 +30,12 @@ public sealed class AppSettings
 
     /// <summary>How long the toast stays fully visible, excluding the fade in/out.</summary>
     public double DurationSeconds { get; set; } = 4;
+
+    /// <summary>
+    /// Scroll speed, in logical pixels per second, for a song title or artist too long
+    /// to fit. The toast stays up until a full scroll pass completes, even past the duration.
+    /// </summary>
+    public int MarqueeSpeed { get; set; } = 50;
 
     /// <summary>
     /// Global shortcut that shows the current song, e.g. "Ctrl+Alt+Shift+S".
@@ -98,6 +105,7 @@ public sealed class AppSettings
         s.DurationSeconds = double.IsFinite(s.DurationSeconds)
             ? Math.Clamp(s.DurationSeconds, MinDuration, MaxDuration)
             : 4;
+        s.MarqueeSpeed = Math.Clamp(s.MarqueeSpeed, MinMarqueeSpeed, MaxMarqueeSpeed);
         if (string.IsNullOrWhiteSpace(s.ShowHotkey))
             s.ShowHotkey = "";
         else

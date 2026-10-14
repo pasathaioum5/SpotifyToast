@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -11,7 +11,7 @@
     <AssemblyTitle>SpotifyToast</AssemblyTitle>
     <Product>SpotifyToast</Product>
     <Description>Shows a toast notification when the Spotify desktop app changes track.</Description>
-    <Version>1.1.0</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <!-- Release builds: replace the local source path (which contains the Windows username)

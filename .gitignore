@@ -35,3 +35,6 @@ Desktop.ini
 .claude/settings.local.json
 # A settings.json copied here for testing (the real one lives in %APPDATA%\SpotifyToast).
 settings.json
+
+# Packaged releases (upload to GitHub Releases instead).
+release/

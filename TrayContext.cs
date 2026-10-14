@@ -11,6 +11,9 @@ public sealed class TrayContext : ApplicationContext
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string RunValueName = "SpotifyToast";
     private static readonly Track SampleTrack = new("Artist Name", "Song Title");
+    private static readonly Track LongSampleTrack = new(
+        "An Artist With A Remarkably Long Name feat. Several Guest Performers",
+        "A Song Title That Is Much Too Long To Fit In The Toast (Extended Remix)");
     private static readonly Track NothingPlaying = new("Spotify", "Nothing is playing");
 
     private readonly NotifyIcon _tray;
@@ -114,10 +117,10 @@ public sealed class TrayContext : ApplicationContext
         _hotkeys.Unregister();
 
         _settingsForm = new SettingsForm(_settings,
-            preview: preview =>
+            preview: (preview, longSample) =>
             {
                 _toast.ApplySettings(preview);
-                _toast.ShowTrack(_current ?? SampleTrack);
+                _toast.ShowTrack(longSample ? LongSampleTrack : _current ?? SampleTrack);
             },
             // Runs on Save: registering here doubles as the "is it free?" check.
             validate: TryApplyHotkey,
