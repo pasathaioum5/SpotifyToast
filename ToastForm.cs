@@ -8,10 +8,10 @@ namespace SpotifyToast;
 /// scales with whatever size the user picks in settings.
 /// </summary>
 /// <remarks>
-/// A song title or artist too wide for the toast scrolls as a marquee: pause at the
-/// start, scroll until the end is visible, pause, then jump back and repeat. The toast
-/// only fades out at the end of a full pass, so long text is always read completely,
-/// even if that keeps the toast up longer than the configured duration.
+/// A song title or artist too wide for the toast scrolls once as a marquee: pause at the
+/// start, scroll until the end is visible, then stay there. The toast never fades out
+/// before that pass (plus a closing pause) completes, so long text is always read in
+/// full, even if that keeps the toast up longer than the configured duration.
 /// </remarks>
 public sealed class ToastForm : Form
 {
@@ -183,23 +183,19 @@ public sealed class ToastForm : Form
             return;
         }
 
-        // One marquee pass: pause, scroll the longest line fully into view, pause.
+        // A single marquee pass: pause, scroll the longest line fully into view, pause.
         double pxPerMs = _settings.MarqueeSpeed * DeviceDpi / 96.0 / 1000.0;
-        long cycleMs = MarqueePauseMs + (long)Math.Ceiling(maxOverflow / pxPerMs) + MarqueePauseMs;
-        // Fade only at the end of a pass: the first pass boundary at or after the duration.
-        long fadeAtMs = Math.Max(1, (holdMs + cycleMs - 1) / cycleMs) * cycleMs;
-
-        if (elapsed >= fadeAtMs)
+        long passMs = MarqueePauseMs + (long)Math.Ceiling(maxOverflow / pxPerMs) + MarqueePauseMs;
+        // Stay for the configured duration, or longer if the pass needs it. The text scrolls
+        // only once; any remaining time is spent showing the end of the text.
+        if (elapsed >= Math.Max(holdMs, passMs))
         {
-            // Leave both lines showing their ends while fading out.
-            SetOffsets(_titleOverflow, _artistOverflow);
             BeginFadeOut();
             return;
         }
 
-        long t = elapsed % cycleMs;
-        double scrolled = t < MarqueePauseMs ? 0 : (t - MarqueePauseMs) * pxPerMs;
-        // Both lines move at the same speed; the shorter one stops at its end and waits.
+        double scrolled = elapsed < MarqueePauseMs ? 0 : (elapsed - MarqueePauseMs) * pxPerMs;
+        // Both lines move at the same speed; each stops at its own end and stays there.
         SetOffsets((int)Math.Min(scrolled, _titleOverflow), (int)Math.Min(scrolled, _artistOverflow));
     }
 

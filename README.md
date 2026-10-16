@@ -66,7 +66,7 @@ dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile
 | Press the shortcut (`Ctrl+Alt+Shift+S`) | Shows the current song again |
 | Left-click the tray icon | Shows the current song again |
 | Double-click the tray icon | Opens Settings |
-| Right-click the tray icon | Menu: Show current song, Settings..., Start with Windows, Exit |
+| Right-click the tray icon | Menu: Show current song, Settings..., Start with Windows, About SpotifyToast..., Exit |
 
 ## Configuration
 
@@ -104,15 +104,15 @@ You can edit the file by hand. Out-of-range values are clamped, and if the file 
 
 ### Long song titles and artist names
 
-If a song title or artist name is wider than the toast, that line scrolls:
+If a song title or artist name is wider than the toast, that line scrolls **once**:
 
 1. It pauses for 1 s at the start.
 2. It scrolls left until the end of the text is visible.
-3. It pauses for 1 s at the end.
+3. It stays on the end of the text until the toast fades.
 
-If time remains, it jumps back to the start and repeats. Both lines scroll at the same speed, and a line that fits stays still.
+Both lines scroll at the same speed, and a line that fits stays still.
 
-**The toast always finishes a full scroll pass before fading out, even if that runs past the display duration.** For example, a title that needs 6 s to scroll keeps a 4 s toast on screen for about 6 s. Changing the speed in Settings previews it with sample long text.
+**The toast stays for the display duration or until the scroll finishes (plus a 1 s pause at the end), whichever is longer.** For example, a title that needs 6 s to scroll keeps a 4 s toast on screen for about 6 s, and a short scroll in a 10 s toast is followed by the end of the text for the remaining time. Changing the speed in Settings previews it with sample long text.
 
 ### Keyboard shortcut rules
 
@@ -149,6 +149,7 @@ SpotifyToast/
 ├── SpotifyWatcher.cs   # WinEvent hooks + Spotify window title parsing
 ├── ToastForm.cs        # The borderless, fading, custom-painted popup
 ├── SettingsForm.cs     # Settings dialog with live preview
+├── AboutForm.cs        # About window: version and credits
 ├── AppSettings.cs      # Settings model, JSON load/save, validation
 ├── Hotkey.cs           # Hotkey parsing + RegisterHotKey wrapper
 ├── HotkeyBox.cs        # "Press a key combination" input control

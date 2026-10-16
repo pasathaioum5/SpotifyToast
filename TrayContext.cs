@@ -24,6 +24,7 @@ public sealed class TrayContext : ApplicationContext
     private readonly ToolStripMenuItem _showItem;
     private AppSettings _settings = AppSettings.Load();
     private SettingsForm? _settingsForm;
+    private AboutForm? _aboutForm;
     private Track? _current;
 
     public TrayContext()
@@ -39,6 +40,7 @@ public sealed class TrayContext : ApplicationContext
         menu.Items.Add(_showItem);
         menu.Items.Add("Settings...", null, (_, _) => OpenSettings());
         menu.Items.Add(startup);
+        menu.Items.Add("About SpotifyToast...", null, (_, _) => OpenAbout());
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, (_, _) => ExitThread());
 
@@ -155,6 +157,25 @@ public sealed class TrayContext : ApplicationContext
         }
     }
 
+    private void OpenAbout()
+    {
+        if (_aboutForm is not null)
+        {
+            _aboutForm.Activate();
+            return;
+        }
+
+        // Modeless, so the tray menu and hotkey keep working while it is open.
+        _aboutForm = new AboutForm(_appIcon);
+        _aboutForm.FormClosed += (_, _) =>
+        {
+            _aboutForm?.Dispose();
+            _aboutForm = null;
+        };
+        _aboutForm.Show();
+        _aboutForm.Activate();
+    }
+
     private static Icon LoadAppIcon()
     {
         using var stream = typeof(TrayContext).Assembly.GetManifestResourceStream("SpotifyToast.app.ico");
@@ -194,6 +215,7 @@ public sealed class TrayContext : ApplicationContext
     protected override void ExitThreadCore()
     {
         _settingsForm?.Close();
+        _aboutForm?.Close();
         _watcher.Stop();
         _tray.Visible = false; // remove the icon immediately instead of leaving a ghost
         base.ExitThreadCore();
