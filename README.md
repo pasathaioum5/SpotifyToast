@@ -153,7 +153,9 @@ SpotifyToast/
 ├── AppSettings.cs      # Settings model, JSON load/save, validation
 ├── Hotkey.cs           # Hotkey parsing + RegisterHotKey wrapper
 ├── HotkeyBox.cs        # "Press a key combination" input control
+├── ToastFonts.cs       # Loads the bundled Google Sans fonts
 ├── Resources/app.ico   # Application and tray icon
+├── Resources/Fonts/    # Google Sans (SIL OFL 1.1), used for the toast text
 └── docs/toast.png      # README screenshot
 ```
 
@@ -182,6 +184,7 @@ SpotifyToast makes no network connections and collects no data. It reads only wi
 
 - **Inspiration:** the idea for SpotifyToast comes from [**Toastify**](https://github.com/aleab/toastify) by **aleab**, version 1.10.11. Toastify is a full-featured Spotify companion with toasts, media hotkeys and more. SpotifyToast is a from-scratch, minimal reimplementation of its core idea: a toast on track change. It shares no source code with Toastify.
 - The application icon (`Resources/app.ico`) is `ToastifyIcon.ico`, taken from the Toastify 1.10.14 source and licensed under **GPLv2**. It's derived from the Spotify logo.
+- The toast text uses **Google Sans** by The Google Sans Project Authors, licensed under the [SIL Open Font License 1.1](Resources/Fonts/OFL.txt). The bundled copies are modified static instances; see [Resources/Fonts/README.md](Resources/Fonts/README.md). "Google Sans" is a trademark of Google LLC, and this project isn't affiliated with Google.
 - **Spotify** is a trademark of Spotify AB. This project is not affiliated with, endorsed by or sponsored by Spotify.
 
 <!-- TODO: choose a license for the source code and add a LICENSE file. -->

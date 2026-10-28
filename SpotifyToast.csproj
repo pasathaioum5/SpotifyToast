@@ -11,7 +11,7 @@
     <AssemblyTitle>SpotifyToast</AssemblyTitle>
     <Product>SpotifyToast</Product>
     <Description>Shows a toast notification when the Spotify desktop app changes track.</Description>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
 
   <!-- Release builds: replace the local source path (which contains the Windows username)
@@ -24,6 +24,9 @@
   <ItemGroup>
     <!-- Embedded as well so the tray can load the crisp 16px frame instead of a downscaled 32px one. -->
     <EmbeddedResource Include="Resources\app.ico" LogicalName="SpotifyToast.app.ico" />
+    <!-- Google Sans (SIL OFL 1.1, see Resources\Fonts\OFL.txt), static instances of the variable font. -->
+    <EmbeddedResource Include="Resources\Fonts\GoogleSans-Regular.ttf" LogicalName="SpotifyToast.GoogleSans-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\GoogleSans-Medium.ttf" LogicalName="SpotifyToast.GoogleSans-Medium.ttf" />
   </ItemGroup>
 
 </Project>

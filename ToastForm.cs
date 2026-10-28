@@ -122,8 +122,8 @@ public sealed class ToastForm : Form
         // Font sizes follow the toast height so small/large toasts both look balanced.
         float titlePx = Math.Clamp(content.Height * 0.36f, 10f, 48f);
         float artistPx = Math.Clamp(content.Height * 0.27f, 9f, 36f);
-        _titleFont = new Font("Segoe UI Semibold", titlePx, GraphicsUnit.Pixel);
-        _artistFont = new Font("Segoe UI", artistPx, GraphicsUnit.Pixel);
+        _titleFont = ToastFonts.Title(titlePx);
+        _artistFont = ToastFonts.Artist(artistPx);
 
         Size titleSize = TextRenderer.MeasureText(_track.Title.Length > 0 ? _track.Title : "Ag", _titleFont, Size.Empty, BaseFlags);
         Size artistSize = TextRenderer.MeasureText(_track.Artist.Length > 0 ? _track.Artist : "Ag", _artistFont, Size.Empty, BaseFlags);

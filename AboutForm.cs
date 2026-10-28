@@ -50,7 +50,10 @@ public sealed class AboutForm : Form
         text.Controls.Add(MakeLabel("Credits", new Font("Segoe UI Semibold", 9F), bottom: 2));
         text.Controls.Add(MakeLink("Inspired by Toastify by aleab.", "Toastify", ToastifyUrl, bottom: 4));
         text.Controls.Add(MakeLabel(
-            "Icon: ToastifyIcon.ico from the Toastify project (GPLv2), derived from the Spotify logo."));
+            "Icon: ToastifyIcon.ico from the Toastify project (GPLv2), derived from the Spotify logo.",
+            bottom: 4));
+        text.Controls.Add(MakeLabel(
+            "Toast font: Google Sans by The Google Sans Project Authors, SIL Open Font License 1.1."));
         text.Controls.Add(MakeLabel(
             "Not affiliated with Spotify. Spotify is a trademark of Spotify AB.", bottom: 0));
 
